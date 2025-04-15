@@ -12,8 +12,6 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = Project.objects.all()
-
-        # --- Filtering ---
         search = self.request.query_params.get("search")
         type_filter = self.request.query_params.get("type")
         status_filter = self.request.query_params.get("status")
@@ -29,7 +27,6 @@ class ProjectViewSet(viewsets.ModelViewSet):
         if status_filter:
             queryset = queryset.filter(status=status_filter)
 
-        # --- Sorting ---
         sort_field = self.request.query_params.get("ordering")
         if sort_field:
             queryset = queryset.order_by(sort_field)
