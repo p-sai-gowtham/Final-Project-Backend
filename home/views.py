@@ -1,12 +1,27 @@
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Project
-from .serializers import ProjectSerializer
 from rest_framework import viewsets
 from django.db.models import Q
+from rest_framework import generics, permissions
+from django.contrib.auth.models import User
+from .serializers import ProjectSerializer, RegisterSerializer, CustomTokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework.permissions import IsAuthenticated
+
+
+class RegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    permission_classes = (permissions.AllowAny,)
+    serializer_class = RegisterSerializer
+
+
+class LoginView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
 
 
 class ProjectViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
 
