@@ -9,17 +9,17 @@ from .serializers import ProjectSerializer, RegisterSerializer, CustomTokenObtai
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.permissions import IsAuthenticated
 
-
+# creates a new user
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     permission_classes = (permissions.AllowAny,)
     serializer_class = RegisterSerializer
 
-
+# checks the creds and send the token is the creds are correct
 class LoginView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
 
-
+# send the projects according to the filters and create and edits the projects
 class ProjectViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = Project.objects.all()

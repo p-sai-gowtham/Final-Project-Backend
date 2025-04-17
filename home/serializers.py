@@ -14,13 +14,14 @@ class RegisterSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(**validated_data)
         return user
 
-
+# creates a token which consists of an object of username and the weather he/she is admin
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
         # Add custom claims if needed
         token["username"] = user.username
+        token["is_staff"] = user.is_staff
         return token
 
 
